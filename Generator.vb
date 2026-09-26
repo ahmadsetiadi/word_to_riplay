@@ -21,6 +21,14 @@ Public Class Generator
     Public Property OutputFolder As String = Nothing
     Public Property BodyCount As Integer = 0
 
+    ''' <summary>Nama file PDF hasil akhir di folder output.</summary>
+    Public Const PdfName As String = "riplay.pdf"
+
+    ''' <summary>Cetak AllPages.html ke PDF setelah HTML selesai ditulis.</summary>
+    Public Property MakePdf As Boolean = True
+
+    Public Property PdfPath As String = Nothing
+
     Public Function Run(docxPath As String) As String
         If Not File.Exists(docxPath) Then
             Throw New FileNotFoundException("File tidak ditemukan: " & docxPath)
@@ -110,8 +118,19 @@ Public Class Generator
             Say("Tulis : " & kv.Key)
         Next
 
-        WriteFile(Path.Combine(outDir, "AllPages.html"),
-                  BuildPreview(m, parts, w))
+        Dim allPages = Path.Combine(outDir, "AllPages.html")
+        WriteFile(allPages, BuildPreview(m, parts, w))
+
+        ' --- AllPages.html -> riplay.pdf ---
+        If MakePdf Then
+            Try
+                PdfPath = PdfExporter.Export(allPages, Path.Combine(outDir, PdfName),
+                                             m.Setup.WidthTw / 1440.0, m.Setup.HeightTw / 1440.0,
+                                             AddressOf Say)
+            Catch ex As Exception
+                Say("PDF   : GAGAL - " & ex.Message)
+            End Try
+        End If
 
         Say("Selesai. Output: " & outDir)
         Return outDir
@@ -193,6 +212,8 @@ Public Class Generator
         Next
         Dim cssPath = Path.Combine(dir, CssFileName)
         If File.Exists(cssPath) Then File.Delete(cssPath)
+        Dim oldPdf = Path.Combine(dir, PdfName)
+        If File.Exists(oldPdf) Then File.Delete(oldPdf)
         Say("Bersih: output lama dihapus")
     End Sub
 
