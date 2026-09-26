@@ -1,0 +1,146 @@
+/* page.css -- dihasilkan RiplayWord2Html dari .docx
+   Dipakai bersama oleh header.html, footer.html dan semua bodyN.html. */
+
+@page { size: 21.001cm 29.7cm; margin: 0; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body {
+  font-family: 'Times New Roman', Arial, sans-serif;
+  font-size: 8pt;
+  color: #000;
+  line-height: 1.16;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+p { margin: 0; }
+sup, sub { font-size: 65%; line-height: 0; }
+img { display: inline-block; vertical-align: top; }
+
+/* tabel mengikuti lebar grid Word */
+table { border-collapse: collapse; table-layout: fixed; border-spacing: 0; }
+td { padding: 0; vertical-align: top; overflow-wrap: break-word; }
+
+/* label nomor/huruf pada paragraf hanging-indent (meniru tab stop Word) */
+.lbl { display: inline-block; text-indent: 0; }
+.tab { display: inline-block; width: 0.5cm; }
+
+/* lebar area isi = lebar halaman dikurangi margin kiri-kanan */
+.hdr, .ftr, .bdy { width: 18.401cm; }
+
+/* tampilan saat file dibuka sendiri-sendiri */
+body > .hdr, body > .ftr, body > .bdy { margin: 1.55cm auto; }
+
+/* kerangka halaman utuh (dipakai AllPages.html) */
+.page {
+  position: relative;
+  width: 21.001cm;
+  height: 29.7cm;
+  padding: 1.55cm 1.3cm 2.45cm 1.3cm;
+  overflow: hidden;
+  background: #fff;
+}
+.page + .page { page-break-before: always; break-before: page; }
+.page > .hdr { position: absolute; top: 0.499cm; left: 1.3cm; right: 1.3cm; }
+.page > .ftr { position: absolute; bottom: 0.45cm; left: 1.3cm; right: 1.3cm; }
+.page > .bdy { width: auto; }
+
+.page-break { break-after: page; page-break-after: always; height: 0; }
+
+@media screen {
+  body { background: #e9e9ec; }
+  .page { margin: 0.6cm auto; box-shadow: 0 0 6px rgba(0,0,0,.28); }
+  body > .hdr, body > .ftr, body > .bdy { background: #fff; padding: 0.5cm; }
+}
+
+/* ---- class hasil konversi format Word ---- */
+.t1{width:18.401cm}
+.c2{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0cm;vertical-align:top}
+.c3{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0cm;vertical-align:middle}
+.p4{font-size:9pt;text-align:right;line-height:11pt}
+.r5{font-family:'Segoe UI';color:#63666a}
+.r6{font-weight:700;font-family:'Segoe UI';color:#63666a}
+.p7{text-align:left;line-height:9.3pt}
+.c8{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0.053cm;vertical-align:top}
+.p9{font-size:6.5pt;text-align:left;line-height:8pt}
+.r10{font-family:'Segoe UI'}
+.r11{font-family:'Segoe UI';color:#ff0000}
+.r12{color:#ff0000}
+.c13{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0.053cm;vertical-align:middle}
+.p14{font-size:7.5pt;text-align:center;line-height:9.3pt}
+.p15{text-align:right;line-height:9.3pt}
+.p16{font-size:6.5pt;text-align:right}
+.p17{font-size:8.5pt;text-align:center;margin-bottom:5pt;line-height:9.3pt;background-color:#0e3f2b}
+.r18{font-weight:700;font-family:'Segoe UI';color:#ffffff}
+.t19{width:18.399cm}
+.c20{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0.053cm;padding-right:0cm;vertical-align:top}
+.p21{text-align:left;line-height:10.5pt}
+.c22{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0.053cm;padding-right:0.3cm;vertical-align:top}
+.p23{text-align:justify;line-height:10.5pt}
+.r24{font-weight:700;font-family:'Segoe UI'}
+.c25{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0.053cm;padding-right:0.106cm;vertical-align:top}
+.p26{font-size:8.5pt;text-align:center;margin-top:4pt;margin-bottom:5pt;line-height:9.3pt;background-color:#0e3f2b}
+.tr27{height:0.619cm}
+.c28{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.053cm;padding-left:0.123cm;padding-bottom:0.053cm;padding-right:0.123cm;vertical-align:middle}
+.p29{font-size:8.5pt;text-align:center;line-height:9.3pt}
+.tr30{height:0.42cm}
+.c31{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.053cm;padding-left:0.123cm;padding-bottom:0.053cm;padding-right:0.123cm;vertical-align:top}
+.p32{text-align:center;line-height:9.3pt}
+.tr33{height:0.36cm}
+.c34{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.021cm;padding-left:0.123cm;padding-bottom:0.021cm;padding-right:0.123cm;vertical-align:middle}
+.p35{text-align:justify;padding-left:0.6cm;text-indent:-0.6cm;line-height:9.3pt}
+.tr36{height:0.699cm}
+.p37{text-align:justify;padding-left:1.101cm;text-indent:-1.101cm;line-height:9.3pt}
+.p38{text-align:justify;line-height:9.3pt}
+.tr39{height:0.399cm}
+.p40{text-align:left;margin-bottom:2pt;line-height:9.3pt}
+.p41{text-align:justify;padding-left:0.651cm;text-indent:-0.651cm;line-height:9.3pt}
+.p42{text-align:left;padding-left:0.651cm;line-height:9.3pt}
+.p43{text-align:justify;padding-left:0.651cm;line-height:9.3pt}
+.r44{font-style:italic;font-family:'Segoe UI'}
+.p45{font-size:8.5pt;text-align:center;margin-bottom:4pt;line-height:9.3pt;background-color:#0e3f2b}
+.p46{text-align:left;margin-bottom:1pt;line-height:9.3pt}
+.r47{font-weight:700;text-decoration:underline;font-family:'Segoe UI'}
+.p48{text-align:left;padding-left:0.45cm;text-indent:-0.45cm;line-height:9.3pt}
+.p49{text-align:justify;padding-left:0.951cm;text-indent:-0.499cm;line-height:9.3pt}
+.r50{font-weight:700;font-family:'Segoe UI';color:#ff0000}
+.p51{text-align:justify;padding-left:1.45cm;text-indent:-0.499cm;line-height:9.3pt}
+.p52{text-align:justify;padding-left:0.45cm;line-height:9.3pt}
+.p53{text-align:justify;padding-left:0.951cm;line-height:9.3pt}
+.p54{text-align:justify;padding-left:0.45cm;text-indent:-0.45cm;line-height:9.3pt}
+.p55{text-align:left;padding-left:0.951cm;line-height:9.3pt}
+.t56{width:7.601cm;margin-left:0.9cm}
+.c57{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0.018cm;padding-left:0.035cm;padding-bottom:0.018cm;padding-right:0.035cm;vertical-align:middle}
+.p58{text-align:center;line-height:10pt}
+.p59{text-align:justify;margin-bottom:2pt;line-height:9.3pt}
+.p60{text-align:justify;padding-left:0.45cm;text-indent:-0.45cm;margin-top:1pt;line-height:9.3pt}
+.p61{font-size:8.5pt;text-align:center;margin-bottom:2pt;line-height:9.3pt;background-color:#0e3f2b}
+.p62{text-align:left;padding-left:0.951cm;text-indent:-0.499cm;line-height:9.3pt}
+.p63{text-align:left;padding-left:1.45cm;line-height:9.3pt}
+.r64{font-weight:700;font-style:italic;font-family:'Segoe UI'}
+.p65{text-align:left;padding-left:0.45cm;line-height:9.3pt}
+.r66{text-decoration:underline;font-family:'Segoe UI';color:#006666}
+.p67{font-size:8.5pt;text-align:center;margin-bottom:1pt;line-height:9.3pt;background-color:#0e3f2b}
+.p68{font-size:8.5pt;text-align:center;margin-top:1pt;margin-bottom:5pt;line-height:9.3pt;background-color:#0e3f2b}
+.r69{font-family:'Segoe UI';background-color:#00ffff}
+.p70{text-align:left;padding-left:0.55cm;text-indent:-0.55cm;margin-bottom:3pt;line-height:9.3pt}
+.tr71{height:0.499cm}
+.c72{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.018cm;padding-left:0.035cm;padding-bottom:0.018cm;padding-right:0.035cm;background-color:#0e3f2b;vertical-align:middle}
+.p73{font-size:6.5pt;text-align:center;line-height:7.5pt}
+.tr74{height:1.15cm}
+.tr75{height:1.249cm}
+.c76{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.018cm;padding-left:0.035cm;padding-bottom:0.018cm;padding-right:0.035cm;vertical-align:middle}
+.p77{font-size:6.5pt;text-align:center;line-height:8pt}
+.c78{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.018cm;padding-left:0.035cm;padding-bottom:0.018cm;padding-right:0.035cm;vertical-align:top}
+.p79{text-align:left;margin-bottom:3pt;line-height:9.3pt}
+.t80{width:17.898cm;margin-left:0.499cm}
+.c81{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0.071cm;padding-right:0cm;vertical-align:top}
+.p82{text-align:left;padding-left:5.95cm;margin-bottom:2pt;line-height:9.3pt}
+.t83{width:12.45cm;margin-left:5.95cm}
+.c84{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.026cm;padding-left:0.071cm;padding-bottom:0.026cm;padding-right:0.071cm;vertical-align:middle}
+.p85{text-align:left;padding-left:5.95cm;line-height:9.3pt}
+.t86{width:12.451cm;margin-left:5.95cm}
+.c87{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.035cm;padding-left:0.071cm;padding-bottom:0.035cm;padding-right:0.071cm;vertical-align:middle}
+.tr88{height:1.05cm}
+.tr89{height:0.549cm}

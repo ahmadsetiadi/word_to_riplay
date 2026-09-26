@@ -81,8 +81,14 @@ Public Class RiplayData
         d("illustrationdate") = Date.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
         d("illustrationexpireddate") = Date.Today.AddDays(30).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
 
-        ' --- tabel ilustrasi (untuk <<illus.xxx>> di halaman 7) --------
-        d("illus") = SampleIllustration(insuredEntryAge, basicPremium, currency)
+        ' --- tabel ilustrasi halaman 7 --------------------------------
+        '  Satu baris contoh di Word, ditulis dengan penanda:
+        '    <<illustration_age>> <<illustration_tahun>> <<illustration_premi>>
+        '    <<illustration_payment>> <<illustration_payment_add>> <<illustration_payment_total>>
+        '    <<illustration_cashvalues>> <<illustration_cashvalues_add>>
+        '    <<illustration_cashvalues_total>> <<illustration_adb>>
+        '  MarkerEngine menggandakan baris itu satu kali per item di sini.
+        d("illustration") = SampleIllustration(insuredEntryAge, basicPremium, currency, 3)
 
         Return d
     End Function
@@ -101,20 +107,30 @@ Public Class RiplayData
         End Select
     End Function
 
+    ''' <summary>
+    ''' Contoh isi tabel ilustrasi. Nama field HARUS sama dengan bagian setelah
+    ''' "illustration_" pada penanda di Word, mis. &lt;&lt;illustration_payment_add&gt;&gt;
+    ''' mengambil field "payment_add".
+    ''' </summary>
     Private Shared Function SampleIllustration(entryAge As Integer, premi As Double,
-                                               currency As String) As List(Of Object)
+                                               currency As String, rows As Integer) As List(Of Object)
         Dim res As New List(Of Object)
-        For i = 1 To 5
+        For i = 1 To rows
+            Dim payment = premi * 0.05 * i
+            Dim paymentAdd = premi * 0.01 * i
+            Dim cashValue = premi * 0.9 * i
+            Dim cashValueAdd = premi * 0.05 * i
+
             Dim row As New Dictionary(Of String, Object) From {
                 {"age", entryAge + i},
-                {"year", i},
-                {"premium", Money(premi, currency)},
-                {"cashPayment", Money(premi * 0.05 * i, currency)},
-                {"addCashPayment", Money(premi * 0.01 * i, currency)},
-                {"totalCashPayment", Money(premi * 0.06 * i, currency)},
-                {"cashValue", Money(premi * 0.9 * i, currency)},
-                {"addCashValue", Money(premi * 0.05 * i, currency)},
-                {"totalCashValue", Money(premi * 0.95 * i, currency)},
+                {"tahun", i},
+                {"premi", Money(premi, currency)},
+                {"payment", Money(payment, currency)},
+                {"payment_add", Money(paymentAdd, currency)},
+                {"payment_total", Money(payment + paymentAdd, currency)},
+                {"cashvalues", Money(cashValue, currency)},
+                {"cashvalues_add", Money(cashValueAdd, currency)},
+                {"cashvalues_total", Money(cashValue + cashValueAdd, currency)},
                 {"adb", Money(premi, currency)}
             }
             res.Add(row)

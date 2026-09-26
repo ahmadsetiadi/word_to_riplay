@@ -1,0 +1,118 @@
+/* page.css -- dihasilkan RiplayWord2Html dari .docx
+   Dipakai bersama oleh header.html, footer.html dan semua bodyN.html. */
+
+@page { size: 21.001cm 29.7cm; margin: 0; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body {
+  font-family: 'Times New Roman', Arial, sans-serif;
+  font-size: 8pt;
+  color: #000;
+  line-height: 1.16;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+p { margin: 0; }
+sup, sub { font-size: 65%; line-height: 0; }
+img { display: inline-block; vertical-align: top; }
+
+/* tabel mengikuti lebar grid Word */
+table { border-collapse: collapse; table-layout: fixed; border-spacing: 0; }
+td { padding: 0; vertical-align: top; overflow-wrap: break-word; }
+
+/* label nomor/huruf pada paragraf hanging-indent (meniru tab stop Word) */
+.lbl { display: inline-block; text-indent: 0; }
+.tab { display: inline-block; width: 0.5cm; }
+
+/* lebar area isi = lebar halaman dikurangi margin kiri-kanan */
+.hdr, .ftr, .bdy { width: 18.401cm; }
+
+/* tampilan saat file dibuka sendiri-sendiri */
+body > .hdr, body > .ftr, body > .bdy { margin: 1.55cm auto; }
+
+/* kerangka halaman utuh (dipakai AllPages.html) */
+.page {
+  position: relative;
+  width: 21.001cm;
+  height: 29.7cm;
+  padding: 1.55cm 1.3cm 2.45cm 1.3cm;
+  overflow: hidden;
+  background: #fff;
+}
+.page + .page { page-break-before: always; break-before: page; }
+.page > .hdr { position: absolute; top: 0.499cm; left: 1.3cm; right: 1.3cm; }
+.page > .ftr { position: absolute; bottom: 0.45cm; left: 1.3cm; right: 1.3cm; }
+.page > .bdy { width: auto; }
+
+.page-break { break-after: page; page-break-after: always; height: 0; }
+
+@media screen {
+  body { background: #e9e9ec; }
+  .page { margin: 0.6cm auto; box-shadow: 0 0 6px rgba(0,0,0,.28); }
+  body > .hdr, body > .ftr, body > .bdy { background: #fff; padding: 0.5cm; }
+}
+
+/* ---- class hasil konversi format Word ---- */
+.t1{width:18.401cm}
+.c2{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0cm;vertical-align:top}
+.c3{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0cm;vertical-align:middle}
+.p4{font-size:9pt;text-align:right;line-height:11pt}
+.r5{font-family:'Segoe UI';color:#63666a}
+.r6{font-weight:700;font-family:'Segoe UI';color:#63666a}
+.p7{text-align:left;line-height:9.3pt}
+.c8{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0.053cm;vertical-align:top}
+.p9{font-size:6.5pt;text-align:left;line-height:8pt}
+.r10{font-family:'Segoe UI'}
+.r11{font-family:'Segoe UI';color:#ff0000}
+.c12{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0cm;padding-right:0.053cm;vertical-align:middle}
+.p13{font-size:7.5pt;text-align:center;line-height:9.3pt}
+.p14{text-align:right;line-height:9.3pt}
+.p15{font-size:6.5pt;text-align:right}
+.p16{font-size:8.5pt;text-align:center;margin-bottom:5pt;line-height:9.3pt;background-color:#0e3f2b}
+.r17{font-weight:700;font-family:'Segoe UI';color:#ffffff}
+.t18{width:18.399cm}
+.c19{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0.053cm;padding-right:0cm;vertical-align:top}
+.p20{text-align:left;line-height:10.5pt}
+.c21{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0.053cm;padding-right:0.3cm;vertical-align:top}
+.p22{text-align:justify;line-height:10.5pt}
+.r23{font-weight:700;font-family:'Segoe UI'}
+.c24{border-top:none;border-left:none;border-bottom:none;border-right:none;padding-top:0cm;padding-left:0cm;padding-bottom:0.053cm;padding-right:0.106cm;vertical-align:top}
+.p25{font-size:8.5pt;text-align:center;margin-top:4pt;margin-bottom:5pt;line-height:9.3pt;background-color:#0e3f2b}
+.r26{color:#ff0000}
+.tr27{height:0.619cm}
+.c28{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.053cm;padding-left:0.123cm;padding-bottom:0.053cm;padding-right:0.123cm;vertical-align:middle}
+.p29{font-size:8.5pt;text-align:center;line-height:9.3pt}
+.tr30{height:0.42cm}
+.c31{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.053cm;padding-left:0.123cm;padding-bottom:0.053cm;padding-right:0.123cm;vertical-align:top}
+.p32{text-align:center;line-height:9.3pt}
+.tr33{height:0.36cm}
+.c34{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.021cm;padding-left:0.123cm;padding-bottom:0.021cm;padding-right:0.123cm;vertical-align:middle}
+.p35{text-align:justify;padding-left:0.6cm;text-indent:-0.6cm;line-height:9.3pt}
+.tr36{height:0.699cm}
+.p37{text-align:justify;padding-left:1.101cm;text-indent:-1.101cm;line-height:9.3pt}
+.p38{text-align:justify;line-height:9.3pt}
+.tr39{height:0.399cm}
+.p40{text-align:left;margin-bottom:2pt;line-height:9.3pt}
+.p41{text-align:justify;padding-left:0.651cm;text-indent:-0.651cm;line-height:9.3pt}
+.r42{font-style:italic;font-family:'Segoe UI'}
+.p43{text-align:left;padding-left:0.45cm;text-indent:-0.45cm;line-height:9.3pt}
+.p44{text-align:left;padding-left:0.951cm;text-indent:-0.499cm;line-height:9.3pt}
+.p45{text-align:left;padding-left:1.45cm;line-height:9.3pt}
+.p46{text-align:justify;padding-left:0.45cm;line-height:9.3pt}
+.p47{text-align:justify;padding-left:0.951cm;text-indent:-0.499cm;line-height:9.3pt}
+.p48{text-align:justify;padding-left:0.45cm;text-indent:-0.45cm;line-height:9.3pt}
+.r49{font-weight:700;font-style:italic;font-family:'Segoe UI'}
+.p50{text-align:left;padding-left:0.45cm;line-height:9.3pt}
+.r51{text-decoration:underline;font-family:'Segoe UI';color:#006666}
+.p52{font-size:8.5pt;text-align:center;margin-bottom:1pt;line-height:9.3pt;background-color:#0e3f2b}
+.p53{font-size:8.5pt;text-align:center;margin-top:1pt;margin-bottom:5pt;line-height:9.3pt;background-color:#0e3f2b}
+.p54{text-align:left;padding-left:0.55cm;text-indent:-0.55cm;margin-bottom:3pt;line-height:9.3pt}
+.tr55{height:0.499cm}
+.c56{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.018cm;padding-left:0.035cm;padding-bottom:0.018cm;padding-right:0.035cm;background-color:#0e3f2b;vertical-align:middle}
+.p57{font-size:6.5pt;text-align:center;line-height:7.5pt}
+.tr58{height:1.15cm}
+.tr59{height:1.249cm}
+.c60{border-top:1px solid #000000;border-left:1px solid #000000;border-bottom:1px solid #000000;border-right:1px solid #000000;padding-top:0.018cm;padding-left:0.035cm;padding-bottom:0.018cm;padding-right:0.035cm;vertical-align:middle}
+.p61{font-size:6.5pt;text-align:center;line-height:8pt}

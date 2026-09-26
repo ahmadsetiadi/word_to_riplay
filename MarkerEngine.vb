@@ -33,6 +33,7 @@ Public Class MarkerEngine
     Public Property RowsDropped As Integer = 0
     Public Property RowsRepeated As Integer = 0
     Public Property Renumbered As Integer = 0
+    Public Property MissingFields As New List(Of String)
 
     Public Sub New(data As Dictionary(Of String, Object), log As Action(Of String))
         _data = data
@@ -263,16 +264,51 @@ Public Class MarkerEngine
         End While
     End Sub
 
+    ''' <summary>
+    ''' Pecah isi penanda jadi nama array + nama field. Dua bentuk didukung:
+    '''   &lt;&lt;illustration.age&gt;&gt;   (titik)
+    '''   &lt;&lt;illustration_age&gt;&gt;   (garis bawah) -- dipakai kalau "illustration"
+    '''                                 memang array di data.
+    ''' Variabel biasa yang kebetulan mengandung '_' tidak terganggu, karena
+    ''' nama sebelum '_' harus benar-benar berupa array.
+    ''' </summary>
+    Private Function SplitArrayField(body As String, ByRef arr As String, ByRef fld As String) As Boolean
+        Dim t = body.Trim()
+
+        Dim dotted = FieldRx.Match(t)
+        If dotted.Success Then
+            Dim nm = dotted.Groups("arr").Value
+            If TypeOf GetData(nm) Is List(Of Object) Then
+                arr = nm
+                fld = dotted.Groups("fld").Value
+                Return True
+            End If
+            Return False
+        End If
+
+        If Not Regex.IsMatch(t, "^[A-Za-z_$][\w$]*$") Then Return False
+        If GetData(t) IsNot Nothing Then Return False          ' variabel biasa, bukan field
+        ' cari nama array terpanjang yang jadi awalan "<array>_<field>"
+        Dim best As String = Nothing
+        For Each k In _data.Keys
+            If Not (TypeOf _data(k) Is List(Of Object)) Then Continue For
+            If t.Length <= k.Length + 1 Then Continue For
+            If Not t.StartsWith(k & "_", StringComparison.OrdinalIgnoreCase) Then Continue For
+            If best Is Nothing OrElse k.Length > best.Length Then best = k
+        Next
+        If best Is Nothing Then Return False
+        arr = best
+        fld = t.Substring(best.Length + 1)
+        Return True
+    End Function
+
     Private Function FindArrayName(row As DocRow) As String
         For Each c In row.Cells
             For Each b In c.Blocks
                 If Not b.IsPara Then Continue For
                 For Each m As Match In MarkRx.Matches(b.Para.PlainText)
-                    Dim f = FieldRx.Match(m.Groups("body").Value)
-                    If f.Success Then
-                        Dim nm = f.Groups("arr").Value
-                        If TypeOf GetData(nm) Is List(Of Object) Then Return nm
-                    End If
+                    Dim arr As String = Nothing, fld As String = Nothing
+                    If SplitArrayField(m.Groups("body").Value, arr, fld) Then Return arr
                 Next
             Next
         Next
@@ -358,18 +394,19 @@ Public Class MarkerEngine
                 If Not b.IsPara Then Continue For
                 ReplaceInPara(b.Para,
                     Function(body)
-                        Dim f = FieldRx.Match(body)
-                        If Not f.Success OrElse
-                           Not String.Equals(f.Groups("arr").Value, arrName, StringComparison.OrdinalIgnoreCase) Then
-                            Return Nothing
-                        End If
-                        Dim fld = f.Groups("fld").Value
+                        Dim arr As String = Nothing, fld As String = Nothing
+                        If Not SplitArrayField(body, arr, fld) Then Return Nothing
+                        If Not String.Equals(arr, arrName, StringComparison.OrdinalIgnoreCase) Then Return Nothing
                         If String.Equals(fld, "no", StringComparison.OrdinalIgnoreCase) Then
                             Return no.ToString(CultureInfo.InvariantCulture)
                         End If
                         If item Is Nothing Then Return ""
                         Dim hit = item.Keys.FirstOrDefault(Function(k) String.Equals(k, fld, StringComparison.OrdinalIgnoreCase))
-                        Return If(hit Is Nothing, "", ExprEngine.ToText(item(hit)))
+                        If hit Is Nothing Then
+                            If Not MissingFields.Contains(arr & "_" & fld) Then MissingFields.Add(arr & "_" & fld)
+                            Return ""
+                        End If
+                        Return ExprEngine.ToText(item(hit))
                     End Function)
             Next
         Next

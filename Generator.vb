@@ -68,6 +68,12 @@ Public Class Generator
             "baris {3} dibuang / {4} digandakan, {5} nomor dirapikan",
             eng.Replaced, eng.BlocksKept, eng.BlocksDropped,
             eng.RowsDropped, eng.RowsRepeated, eng.Renumbered))
+        If eng.MissingFields.Count > 0 Then
+            Say("Perhatian: field tabel berulang tidak ada di data:")
+            For Each f In eng.MissingFields
+                Say("   <<" & f & ">>")
+            Next
+        End If
         If eng.Unknown.Count > 0 Then
             Say("Perhatian: " & eng.Unknown.Count.ToString(CultureInfo.InvariantCulture) &
                 " penanda tidak ada di data (dibiarkan apa adanya):")
