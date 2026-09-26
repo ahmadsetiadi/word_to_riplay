@@ -239,7 +239,43 @@ Public Class DocxReader
         End If
 
         ParseRuns(pEl, res, partDir, rels)
+        CoalesceRuns(res)
         Return res
+    End Function
+
+    ''' <summary>
+    ''' Gabungkan run teks berurutan yang formatnya sama persis.
+    '''
+    ''' Word rutin memecah satu kalimat jadi beberapa &lt;w:r&gt; (rsid berubah tiap
+    ''' sesi edit), sehingga penanda yang diketik manual bisa terbelah, mis.
+    ''' "&lt;&lt;if poli" + "cy.cur == 'IDR'&gt;&gt;". Tanpa digabung, penanda itu
+    ''' tidak akan pernah cocok saat diproses dan akan pecah jadi beberapa span
+    ''' di HTML. Penggabungan ini tidak mengubah tampilan sama sekali.
+    ''' </summary>
+    Private Shared Sub CoalesceRuns(p As DocPara)
+        If p.Runs.Count < 2 Then Return
+        Dim merged As New List(Of DocRun)
+        For Each r In p.Runs
+            If merged.Count > 0 AndAlso r.Kind = RunKind.Text Then
+                Dim prev = merged(merged.Count - 1)
+                If prev.Kind = RunKind.Text AndAlso SameFormat(prev, r) Then
+                    prev.Text &= r.Text
+                    Continue For
+                End If
+            End If
+            merged.Add(r)
+        Next
+        p.Runs = merged
+    End Sub
+
+    Private Shared Function SameFormat(a As DocRun, b As DocRun) As Boolean
+        Return a.Bold = b.Bold AndAlso a.Italic = b.Italic _
+           AndAlso a.Underline = b.Underline _
+           AndAlso a.Superscript = b.Superscript AndAlso a.Subscript = b.Subscript _
+           AndAlso a.SizeHalfPt = b.SizeHalfPt _
+           AndAlso String.Equals(a.FontName, b.FontName, StringComparison.Ordinal) _
+           AndAlso String.Equals(a.ColorHex, b.ColorHex, StringComparison.OrdinalIgnoreCase) _
+           AndAlso String.Equals(a.HighlightName, b.HighlightName, StringComparison.OrdinalIgnoreCase)
     End Function
 
     ''' <summary>Isi Runs; field PAGE/NUMPAGES dijadikan satu run placeholder.</summary>

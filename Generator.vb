@@ -44,6 +44,29 @@ Public Class Generator
                           Num(TwToCm(m.Setup.MarginBottomTw)), Num(TwToCm(m.Setup.MarginLeftTw))))
 
         CleanOutput(outDir)
+        Directory.CreateDirectory(outDir)
+
+        ' --- 1. kumpulkan variabel VB, tulis data.json ---
+        Dim data = RiplayData.Normalize(RiplayData.Build())
+        Dim jsonPath = RiplayData.Write(outDir, data)
+        Say("Data  : " & data.Count.ToString(CultureInfo.InvariantCulture) &
+            " variabel -> " & Path.GetFileName(jsonPath))
+
+        ' --- 2. jalankan semua penanda <<...>> di atas model ---
+        Dim eng As New MarkerEngine(data, AddressOf Say)
+        eng.Apply(m)
+        Say(String.Format(CultureInfo.InvariantCulture,
+            "Isi   : {0} penanda diganti, blok {1} tampil / {2} disembunyikan, " &
+            "baris {3} dibuang / {4} digandakan, {5} nomor dirapikan",
+            eng.Replaced, eng.BlocksKept, eng.BlocksDropped,
+            eng.RowsDropped, eng.RowsRepeated, eng.Renumbered))
+        If eng.Unknown.Count > 0 Then
+            Say("Perhatian: " & eng.Unknown.Count.ToString(CultureInfo.InvariantCulture) &
+                " penanda tidak ada di data (dibiarkan apa adanya):")
+            For Each u In eng.Unknown
+                Say("   <<" & u & ">>")
+            Next
+        End If
 
         ' --- pecah body pada penanda <<Page Break>> ---
         Dim parts = BodySplitter.Split(m.Body)

@@ -41,6 +41,10 @@ Public Module Program
     End Sub
 
     Private Function RunCli(docx As String) As Integer
+        Try
+            Console.OutputEncoding = Text.Encoding.UTF8
+        Catch
+        End Try
         Dim gen As New Generator()
         AddHandler gen.Log, Sub(msg) Console.WriteLine(msg)
         Try
